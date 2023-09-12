@@ -6,6 +6,7 @@ abstract class CharacterState extends Equatable {
 }
 
 class CharacterInitial extends CharacterState {}
+class CharacterLoadMore extends CharacterState {}
 
 class CharacterError extends CharacterState {
   CharacterError(this.message);

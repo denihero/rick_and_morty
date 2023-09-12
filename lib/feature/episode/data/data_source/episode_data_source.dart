@@ -9,4 +9,11 @@ class EpisodeDataSource{
   Future<Response> getAllEpisode(int page){
     return client.dio.get('/api/episode?page=$page');
   }
+
+  Future<Response> getDetailEpisode(int episodeId){
+    return client.dio.get('/api/episode?page=$episodeId');
+  }
+  Future<Response> getCharacterFromEpisode(int page){
+    return client.dio.get('/api/episode?page=$page');
+  }
 }

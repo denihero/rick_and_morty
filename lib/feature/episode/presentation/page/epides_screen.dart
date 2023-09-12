@@ -15,24 +15,51 @@ class EpisodesScreen extends StatefulWidget {
 
 class _EpisodesScreenState extends State<EpisodesScreen> {
   AllEpisodeModel? allEpisode;
+  late ScrollController scrollController;
+  bool isPaginate = false;
 
   @override
   void initState() {
-    context.read<EpisodeBloc>().add(const GetAllEpisode(1));
+    scrollController = ScrollController();
+    context.read<EpisodeBloc>().add(const GetAllEpisode());
+    scrollController.addListener(() {
+      var nextPageTrigger = 0.8 * scrollController.position.maxScrollExtent;
+      if (scrollController.position.pixels > nextPageTrigger) {
+        if (!isPaginate) {
+          context.read<EpisodeBloc>().page += 1;
+          context.read<EpisodeBloc>().add(const GetAllEpisode());
+          isPaginate = true;
+        }
+      }
+    });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: const Text(
+          'Rick and Morty Series',
+          style: TextStyle(color: Colors.black),
+        ),
+      ),
       body: RefreshIndicator(
         onRefresh: () async {
-          context.read<EpisodeBloc>().add(const GetAllEpisode(1));
+          context.read<EpisodeBloc>().add(const GetAllEpisode());
         },
         child: BlocConsumer<EpisodeBloc, EpisodeState>(
           listener: (context, state) {
             if (state is EpisodeSuccess) {
               allEpisode = state.allEpisode;
+              isPaginate = false;
             }
           },
           builder: (context, state) {
@@ -42,6 +69,7 @@ class _EpisodesScreenState extends State<EpisodesScreen> {
               );
             }
             return CustomScrollView(
+              controller: scrollController,
               slivers: [
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
@@ -51,6 +79,17 @@ class _EpisodesScreenState extends State<EpisodesScreen> {
                         episode: allEpisode!.results![index],
                       );
                     },
+                  ),
+                ),
+                SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      if (state is EpisodeLoadMore &&
+                          allEpisode?.info?.next != null)
+                        const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                    ],
                   ),
                 )
               ],

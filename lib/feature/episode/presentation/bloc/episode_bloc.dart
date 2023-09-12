@@ -1,8 +1,6 @@
-import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:rich_and_morti_test_task/feature/characters/presentation/bloc/character_bloc.dart';
 import 'package:rich_and_morti_test_task/feature/episode/domain/model/episode_model.dart';
 import 'package:rich_and_morti_test_task/feature/episode/domain/repository/episode_repository.dart';
 
@@ -14,12 +12,19 @@ class EpisodeBloc extends Bloc<EpisodeEvent, EpisodeState> {
   EpisodeBloc(this.episodeRepository) : super(EpisodeInitial()) {
     on<GetAllEpisode>(getAllEpisodes);
   }
+  int page = 1;
+  List<EpisodeModel> episodes = [];
 
   void getAllEpisodes(GetAllEpisode event, Emitter emit) async {
-    emit(EpisodeLoading());
+    page == 1 ? emit(EpisodeLoading()) : emit(EpisodeLoadMore());
     try {
-      final allEpisode = await episodeRepository.getAllEpisode(event.page);
-      emit(EpisodeSuccess(allEpisode));
+      final result = await episodeRepository.getAllEpisode(page);
+      episodes.addAll(result.results!);
+      emit(
+        EpisodeSuccess(
+          AllEpisodeModel(info: result.info, results: episodes),
+        ),
+      );
     } catch (e) {
       emit(EpisodeError(e.toString()));
     }

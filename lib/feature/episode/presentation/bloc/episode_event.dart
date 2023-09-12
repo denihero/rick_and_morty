@@ -8,10 +8,8 @@ abstract class EpisodeEvent extends Equatable {
 }
 
 class GetAllEpisode extends EpisodeEvent {
-  const GetAllEpisode(this.page);
-
-  final int page;
+  const GetAllEpisode();
 
   @override
-  List<Object?> get props => [page];
+  List<Object?> get props => [];
 }

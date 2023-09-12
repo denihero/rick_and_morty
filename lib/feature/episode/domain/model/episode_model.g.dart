@@ -26,7 +26,7 @@ Info _$InfoFromJson(Map<String, dynamic> json) => Info(
 EpisodeModel _$EpisodeModelFromJson(Map<String, dynamic> json) => EpisodeModel(
       id: json['id'] as int?,
       name: json['name'] as String?,
-      airDate: json['airDate'] as String?,
+      airDate: json['air_date'] as String?,
       episode: json['episode'] as String?,
       characters: (json['characters'] as List<dynamic>?)
           ?.map((e) => e as String)

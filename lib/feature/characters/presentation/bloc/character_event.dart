@@ -5,9 +5,6 @@ abstract class CharacterEvent extends Equatable {
 }
 
 class GetAllCharacter extends CharacterEvent {
-  const GetAllCharacter(this.page);
-
-  final int page;
   @override
-  List<Object?> get props => [page];
+  List<Object?> get props => [];
 }

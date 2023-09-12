@@ -17,6 +17,7 @@ class EpisodeError extends EpisodeState {
 }
 
 class EpisodeLoading extends EpisodeState {}
+class EpisodeLoadMore extends EpisodeState {}
 
 class EpisodeSuccess extends EpisodeState {
   EpisodeSuccess(this.allEpisode);

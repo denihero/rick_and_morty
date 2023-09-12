@@ -29,6 +29,7 @@ class Info {
 class EpisodeModel {
   int? id;
   String? name;
+  @JsonKey(name: 'air_date')
   String? airDate;
   String? episode;
   List<String>? characters;

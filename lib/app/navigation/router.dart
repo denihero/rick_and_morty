@@ -17,11 +17,17 @@ class AppRouter extends $AppRouter {
             AutoRoute(
                 page: CharacterEmptyRoute.page,
                 path: 'character',
-                children: [AutoRoute(page: CharacterRoute.page, path: '')]),
+                children: [
+                  AutoRoute(page: CharacterRoute.page, path: ''),
+                  AutoRoute(page: CharacterDetailRoute.page, path: ':id')
+                ]),
             AutoRoute(
                 page: EpisodesEmptyRoute.page,
                 path: 'episodes',
-                children: [AutoRoute(page: EpisodesRoute.page, path: '')]),
+                children: [
+                  AutoRoute(page: EpisodesRoute.page, path: ''),
+                  AutoRoute(page: EpisodeDetailRoute.page, path: ':id')
+                ]),
           ],
         )
       ];
