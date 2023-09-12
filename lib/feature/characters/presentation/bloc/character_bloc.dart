@@ -10,9 +10,11 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
   final CharacterRepository characterRepository;
   CharacterBloc(this.characterRepository) : super(CharacterInitial()) {
     on<GetAllCharacter>(getAllCharacters);
+    on<FilterCharacter>(filterCharacter);
   }
 
   List<Character> characterList = [];
+  List<Character> filteredCharacters = [];
   int page = 1;
 
   void getAllCharacters(GetAllCharacter event, Emitter emit) async {
@@ -28,6 +30,23 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
           ),
         ),
       );
+    } catch (e) {
+      emit(CharacterError(e.toString()));
+    }
+  }
+
+  void filterCharacter(FilterCharacter event, Emitter emit) async {
+    try {
+      emit(CharacterLoading());
+      final filteredResult = await characterRepository.filterAllCharacter(
+        page: page,
+        status: event.status,
+        species: event.species,
+        type: event.type,
+        gender: event.gender,
+        name: event.name,
+      );
+      emit(CharacterSuccess(filteredResult));
     } catch (e) {
       emit(CharacterError(e.toString()));
     }

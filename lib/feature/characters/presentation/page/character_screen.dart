@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rich_and_morti_test_task/feature/characters/domain/model/character_model.dart';
 import 'package:rich_and_morti_test_task/feature/characters/presentation/bloc/character_bloc.dart';
+import 'package:rich_and_morti_test_task/feature/characters/presentation/widget/character_app_bar.dart';
 import 'package:rich_and_morti_test_task/feature/characters/presentation/widget/character_card.dart';
 
 @RoutePage()
@@ -17,6 +18,8 @@ class _CharacterScreenState extends State<CharacterScreen> {
   AllCharacterModel? allCharacter;
   late ScrollController scrollController;
   bool isPaginate = false;
+  bool isSearchOpen = false;
+  List<Character>? listCharacter = [];
 
   @override
   void initState() {
@@ -38,12 +41,28 @@ class _CharacterScreenState extends State<CharacterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: const Text(
-          'Rick and Morty character',
-          style: TextStyle(color: Colors.black),
-        ),
+      appBar: CharacterAppBar(
+        isSearchOpen: isSearchOpen,
+        onPressedSearch: () {
+          if (isSearchOpen) {
+            setState(() {
+              isSearchOpen = false;
+              listCharacter = allCharacter?.results;
+            });
+          } else {
+            setState(() {
+              isSearchOpen = true;
+            });
+          }
+        },
+        onChanged: (value) {
+          setState(() {
+            listCharacter = allCharacter?.results
+                ?.where((element) =>
+                    element.name!.toLowerCase().contains(value.toLowerCase()))
+                .toList();
+          });
+        },
       ),
       body: RefreshIndicator(
         onRefresh: () async {
@@ -53,7 +72,11 @@ class _CharacterScreenState extends State<CharacterScreen> {
           listener: (context, state) {
             if (state is CharacterSuccess) {
               allCharacter = state.allCharacter;
+              listCharacter = state.allCharacter.results;
               isPaginate = false;
+            } else if (state is CharacterError) {
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(SnackBar(content: Text(state.message)));
             }
           },
           builder: (context, state) {
@@ -67,10 +90,10 @@ class _CharacterScreenState extends State<CharacterScreen> {
               slivers: [
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
-                    childCount: allCharacter?.results?.length ?? 0,
+                    childCount: listCharacter?.length ?? 0,
                     (context, index) {
                       return CharacterCard(
-                        character: allCharacter!.results![index],
+                        character: listCharacter![index],
                       );
                     },
                   ),

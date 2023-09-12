@@ -25,8 +25,9 @@ class _HomeScreenState extends State<HomeScreen> {
           currentIndex: router.activeIndex,
           onTap: router.setActiveIndex,
           items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Герои'),
-            BottomNavigationBarItem(icon: Icon(Icons.tv), label: 'Эпизоды'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.person), label: 'Characters'),
+            BottomNavigationBarItem(icon: Icon(Icons.tv), label: 'Episodes'),
           ],
         );
       },
