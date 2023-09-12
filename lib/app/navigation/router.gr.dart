@@ -22,7 +22,7 @@ import 'package:rich_and_morti_test_task/feature/characters/presentation/page/su
     as _i1;
 import 'package:rich_and_morti_test_task/feature/episode/domain/model/episode_model.dart'
     as _i11;
-import 'package:rich_and_morti_test_task/feature/episode/presentation/page/epides_screen.dart'
+import 'package:rich_and_morti_test_task/feature/episode/presentation/page/episode_screen.dart'
     as _i6;
 import 'package:rich_and_morti_test_task/feature/episode/presentation/page/subpage/episode_detail_screen.dart'
     as _i4;

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rich_and_morti_test_task/feature/episode/domain/model/episode_model.dart';
 import 'package:rich_and_morti_test_task/feature/episode/presentation/bloc/episode_bloc.dart';
+import 'package:rich_and_morti_test_task/feature/episode/presentation/widget/episode_app_bar.dart';
 import 'package:rich_and_morti_test_task/feature/episode/presentation/widget/episode_card.dart';
 
 @RoutePage()
@@ -15,8 +16,10 @@ class EpisodesScreen extends StatefulWidget {
 
 class _EpisodesScreenState extends State<EpisodesScreen> {
   AllEpisodeModel? allEpisode;
+  List<EpisodeModel>? episode;
   late ScrollController scrollController;
   bool isPaginate = false;
+  bool isSearchOpen = false;
 
   @override
   void initState() {
@@ -44,12 +47,28 @@ class _EpisodesScreenState extends State<EpisodesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: const Text(
-          'Rick and Morty Series',
-          style: TextStyle(color: Colors.black),
-        ),
+      appBar: EpisodeAppBar(
+        isSearchOpen: isSearchOpen,
+        onPressedSearch: () {
+          if (isSearchOpen) {
+            setState(() {
+              isSearchOpen = false;
+              episode = allEpisode?.results;
+            });
+          } else {
+            setState(() {
+              isSearchOpen = true;
+            });
+          }
+        },
+        onChanged: (value) {
+          setState(() {
+            episode = allEpisode?.results
+                ?.where((element) =>
+                    element.name!.toLowerCase().contains(value.toLowerCase()))
+                .toList();
+          });
+        },
       ),
       body: RefreshIndicator(
         onRefresh: () async {
@@ -59,6 +78,7 @@ class _EpisodesScreenState extends State<EpisodesScreen> {
           listener: (context, state) {
             if (state is EpisodeSuccess) {
               allEpisode = state.allEpisode;
+              episode = allEpisode?.results;
               isPaginate = false;
             }
           },
@@ -73,10 +93,10 @@ class _EpisodesScreenState extends State<EpisodesScreen> {
               slivers: [
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
-                    childCount: allEpisode?.results?.length ?? 0,
+                    childCount: episode?.length ?? 0,
                     (context, index) {
                       return EpisodeCard(
-                        episode: allEpisode!.results![index],
+                        episode: episode![index],
                       );
                     },
                   ),
