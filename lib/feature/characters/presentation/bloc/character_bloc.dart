@@ -16,6 +16,7 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
   }
 
   List<Character> characterList = [];
+  List<Character> filteredCharacterList = [];
   int page = 1;
 
   void getAllCharacters(GetAllCharacter event, Emitter emit) async {
@@ -80,7 +81,7 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
 
   void filterCharacter(FilterCharacter event, Emitter emit) async {
     try {
-      emit(CharacterLoading());
+      page == 1 ? emit(CharacterLoading()) : emit(CharacterLoadMore());
       final filteredResult = await characterRepository.filterAllCharacter(
         page: page,
         status: event.status,
@@ -89,9 +90,19 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
         gender: event.gender,
         name: event.name,
       );
-      emit(CharacterSuccess(filteredResult));
+      filteredCharacterList.addAll(filteredResult.results!);
+      emit(
+        CharacterSuccess(
+          AllCharacterModel(
+            info: filteredResult.info,
+            results: filteredCharacterList,
+          ),
+        ),
+      );
     } catch (e) {
       emit(CharacterError(e.toString()));
     }
   }
+
+
 }

@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:rich_and_morti_test_task/feature/characters/presentation/widget/character_filter.dart';
 
@@ -7,12 +6,27 @@ class CharacterAppBar extends StatelessWidget implements PreferredSizeWidget {
     Key? key,
     required this.isSearchOpen,
     required this.onPressedSearch,
+    required this.selectedGender,
+    required this.selectedStatus,
+    required this.selectedSpecies,
+    required this.selectedType,
+    required this.onPressed,
     this.onChanged,
   }) : super(key: key);
 
   final bool isSearchOpen;
   final Function() onPressedSearch;
   final ValueChanged<String>? onChanged;
+  final int? selectedGender;
+  final int? selectedStatus;
+  final int? selectedSpecies;
+  final int? selectedType;
+  final Function(
+    int? selectedGender,
+    int? selectedStatus,
+    int? selectedSpecies,
+    int? selectedType,
+  ) onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +50,14 @@ class CharacterAppBar extends StatelessWidget implements PreferredSizeWidget {
               showAdaptiveDialog(
                   context: context,
                   builder: (context) {
-                    return const Material(child: CharacterFilter());
+                    return Material(
+                        child: CharacterFilter(
+                      selectedGender: selectedGender,
+                      selectedStatus: selectedStatus,
+                      selectedSpecies: selectedSpecies,
+                      selectedType: selectedType,
+                      onPressed: onPressed,
+                    ));
                   });
             },
             icon: const Icon(

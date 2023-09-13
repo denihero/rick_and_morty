@@ -2,56 +2,49 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rich_and_morti_test_task/core/filter_utils.dart';
 import 'package:rich_and_morti_test_task/core/widget/primary_button.dart';
 import 'package:rich_and_morti_test_task/feature/characters/presentation/bloc/character_bloc.dart';
 
 class CharacterFilter extends StatefulWidget {
-  const CharacterFilter({Key? key}) : super(key: key);
+  const CharacterFilter(
+      {Key? key,
+      required this.selectedGender,
+      required this.selectedStatus,
+      required this.selectedSpecies,
+      required this.selectedType,
+      required this.onPressed})
+      : super(key: key);
+
+  final int? selectedGender;
+  final int? selectedStatus;
+  final int? selectedSpecies;
+  final int? selectedType;
+  final Function(
+    int? selectedGender,
+    int? selectedStatus,
+    int? selectedSpecies,
+    int? selectedType,
+  ) onPressed;
 
   @override
   State<CharacterFilter> createState() => _CharacterFilterState();
 }
 
 class _CharacterFilterState extends State<CharacterFilter> {
-  List<String> status = ['Alive', 'Dead', 'unknown'];
+  @override
+  initState() {
+    selectedType = widget.selectedType;
+    selectedGender = widget.selectedGender;
+    selectedSpecies = widget.selectedSpecies;
+    selectedStatus = widget.selectedStatus;
+    super.initState();
+  }
+
   int? selectedGender;
-
-  List<String> gender = ['Female', 'Male', 'Genderless', 'unknown'];
   int? selectedStatus;
-
-  List<String> species = [
-    'Human',
-    'Humanoid',
-    'Alien',
-    'Robot',
-    'Animal',
-    'Croonenberg',
-    'Disease',
-    'Poopybutthole',
-    'Mythological Creature'
-  ];
   int? selectedSpecies;
-
-  List<String> type = [
-    'Parasite',
-    'Human with giant head',
-    'Boobloosian',
-    'Elephant-Person',
-    'Superhuman',
-    'Dog',
-    'Bird-Person',
-    'Korblock',
-    'Gromflomite'
-        'Centaur',
-    'Organic gun',
-    'Microverse inhabitant',
-    'Vampire',
-    'Animal',
-    'Gromflomite',
-  ];
   int? selectedType;
-
-  List<String> selectedItem = [];
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +104,7 @@ class _CharacterFilterState extends State<CharacterFilter> {
                   Wrap(
                     children: speciesChip(),
                   ),
-                  const Text('Species', style: TextStyle(fontSize: 18)),
+                  const Text('type', style: TextStyle(fontSize: 18)),
                   Wrap(
                     children: typeChip(),
                   )
@@ -125,26 +118,39 @@ class _CharacterFilterState extends State<CharacterFilter> {
                 child: Column(
                   children: [
                     PrimaryButton(
-                        onPressed: () {
-                          context.router.pop();
-                          context.read<CharacterBloc>().add(
-                                FilterCharacter(
-                                    gender: selectedGender != null
-                                        ? gender[selectedGender!]
-                                        : '',
-                                    status: selectedStatus != null
-                                        ? status[selectedStatus!]
-                                        : '',
-                                    species: selectedSpecies != null
-                                        ? species[selectedSpecies!]
-                                        : '',
-                                    type: selectedType != null
-                                        ? type[selectedType!]
-                                        : null),
-                              );
-                        },
-                        height: 50,
-                        title: 'Apply'),
+                      onPressed: () {
+                        context.router.pop();
+                        context
+                            .read<CharacterBloc>()
+                            .filteredCharacterList
+                            .clear();
+                        context.read<CharacterBloc>().page = 1;
+                        widget.onPressed.call(
+                          selectedGender,
+                          selectedStatus,
+                          selectedSpecies,
+                          selectedType,
+                        );
+                        context.read<CharacterBloc>().add(
+                              FilterCharacter(
+                                gender: selectedGender != null
+                                    ? gender[selectedGender!]
+                                    : '',
+                                status: selectedStatus != null
+                                    ? status[selectedStatus!]
+                                    : '',
+                                species: selectedSpecies != null
+                                    ? species[selectedSpecies!]
+                                    : '',
+                                type: selectedType != null
+                                    ? type[selectedType!]
+                                    : null,
+                              ),
+                            );
+                      },
+                      height: 50,
+                      title: 'Apply',
+                    ),
                     const SizedBox(
                       height: 10,
                     ),
@@ -153,7 +159,15 @@ class _CharacterFilterState extends State<CharacterFilter> {
                           setState(() {
                             selectedStatus = null;
                             selectedGender = null;
+                            selectedType = null;
+                            selectedSpecies = null;
                           });
+                          widget.onPressed.call(
+                            selectedGender,
+                            selectedStatus,
+                            selectedSpecies,
+                            selectedType,
+                          );
                         },
                         height: 50,
                         title: 'Clean')
