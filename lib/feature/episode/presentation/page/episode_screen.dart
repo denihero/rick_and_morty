@@ -28,11 +28,7 @@ class _EpisodesScreenState extends State<EpisodesScreen> {
     scrollController.addListener(() {
       var nextPageTrigger = 0.8 * scrollController.position.maxScrollExtent;
       if (scrollController.position.pixels > nextPageTrigger) {
-        if (!isPaginate) {
-          context.read<EpisodeBloc>().page += 1;
-          context.read<EpisodeBloc>().add(const GetAllEpisode());
-          isPaginate = true;
-        }
+        paginate();
       }
     });
     super.initState();
@@ -118,5 +114,13 @@ class _EpisodesScreenState extends State<EpisodesScreen> {
         ),
       ),
     );
+  }
+
+  void paginate() {
+    if (!isPaginate) {
+      context.read<EpisodeBloc>().page += 1;
+      context.read<EpisodeBloc>().add(const GetAllEpisode());
+      isPaginate = true;
+    }
   }
 }

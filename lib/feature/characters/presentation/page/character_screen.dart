@@ -133,7 +133,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
   }
 
   void paginate() {
-    if (isPaginate == false) {
+    if (!isPaginate) {
       context.read<CharacterBloc>().page += 1;
       if (isSelectedFilter()) {
         useFilter();
