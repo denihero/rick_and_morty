@@ -17,6 +17,7 @@ class EpisodeError extends EpisodeState {
 }
 
 class EpisodeLoading extends EpisodeState {}
+
 class EpisodeLoadMore extends EpisodeState {}
 
 class EpisodeSuccess extends EpisodeState {
@@ -25,4 +26,12 @@ class EpisodeSuccess extends EpisodeState {
   final AllEpisodeModel allEpisode;
   @override
   List<Object> get props => [allEpisode];
+}
+
+class EpisodeDetailedLoaded extends EpisodeState {
+  EpisodeDetailedLoaded(this.episode);
+
+  final EpisodeModel episode;
+  @override
+  List<Object> get props => [episode];
 }

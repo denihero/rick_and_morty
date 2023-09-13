@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:rich_and_morti_test_task/feature/characters/domain/model/character_model.dart';
 
 part 'episode_model.g.dart';
 
@@ -32,7 +33,9 @@ class EpisodeModel {
   @JsonKey(name: 'air_date')
   String? airDate;
   String? episode;
-  List<String>? characters;
+  @JsonKey(name: 'characters')
+  List<String>? charactersUrl;
+  List<Character>? listCharacters;
   String? url;
   String? created;
 
@@ -41,7 +44,8 @@ class EpisodeModel {
       this.name,
       this.airDate,
       this.episode,
-      this.characters,
+      this.charactersUrl,
+        this.listCharacters,
       this.url,
       this.created});
 

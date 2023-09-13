@@ -11,9 +11,10 @@ class EpisodeDataSource{
   }
 
   Future<Response> getDetailEpisode(int episodeId){
-    return client.dio.get('/api/episode?page=$episodeId');
+    return client.dio.get('/api/episode/$episodeId');
   }
-  Future<Response> getCharacterFromEpisode(int page){
-    return client.dio.get('/api/episode?page=$page');
+
+  Future<Response> getCharacterFromEpisode(int characterId){
+    return client.dio.get('/api/character/$characterId');
   }
 }

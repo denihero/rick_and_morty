@@ -28,9 +28,11 @@ EpisodeModel _$EpisodeModelFromJson(Map<String, dynamic> json) => EpisodeModel(
       name: json['name'] as String?,
       airDate: json['air_date'] as String?,
       episode: json['episode'] as String?,
-      characters: (json['characters'] as List<dynamic>?)
+      charactersUrl: (json['characters'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
       url: json['url'] as String?,
       created: json['created'] as String?,
-    );
+    )..listCharacters = (json['listCharacters'] as List<dynamic>?)
+        ?.map((e) => Character.fromJson(e as Map<String, dynamic>))
+        .toList();

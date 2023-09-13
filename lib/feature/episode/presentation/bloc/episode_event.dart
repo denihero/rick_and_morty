@@ -13,3 +13,19 @@ class GetAllEpisode extends EpisodeEvent {
   @override
   List<Object?> get props => [];
 }
+
+class GetDetailEpisode extends EpisodeEvent {
+  const GetDetailEpisode(this.episodeId);
+  final int episodeId;
+
+  @override
+  List<Object?> get props => [episodeId];
+}
+
+class GetCharacterFromEpisode extends EpisodeEvent {
+  const GetCharacterFromEpisode(this.characterId);
+  final int characterId;
+
+  @override
+  List<Object?> get props => [characterId];
+}
