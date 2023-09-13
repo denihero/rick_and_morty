@@ -9,6 +9,13 @@ class GetAllCharacter extends CharacterEvent {
   List<Object?> get props => [];
 }
 
+class GetDetailCharacter extends CharacterEvent {
+  const GetDetailCharacter(this.characterId);
+  final int characterId;
+  @override
+  List<Object?> get props => [characterId];
+}
+
 class FilterCharacter extends CharacterEvent {
   final String? name;
   final String? gender;

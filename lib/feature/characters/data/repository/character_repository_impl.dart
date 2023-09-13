@@ -3,6 +3,7 @@ import 'package:rich_and_morti_test_task/app/network/network_error.dart';
 import 'package:rich_and_morti_test_task/feature/characters/data/source/remote/character_api_remote_source.dart';
 import 'package:rich_and_morti_test_task/feature/characters/domain/model/character_model.dart';
 import 'package:rich_and_morti_test_task/feature/characters/domain/repository/character_repository.dart';
+import 'package:rich_and_morti_test_task/feature/episode/domain/model/episode_model.dart';
 
 class CharacterRepositoryImpl extends CharacterRepository {
   final CharacterApiRemoteSource characterApiRemoteSource;
@@ -37,6 +38,28 @@ class CharacterRepositoryImpl extends CharacterRepository {
       return result;
     } on DioException catch (error) {
       throw ResponseError(message: error.response?.data['error']);
+    }
+  }
+
+  @override
+  Future<Character> getDetailCharacter(int characterId) async {
+    try {
+      final result =
+          await characterApiRemoteSource.getDetailCharacter(characterId);
+      return result;
+    } on DioException catch (error) {
+      throw Exception(error.response?.data);
+    }
+  }
+
+  @override
+  Future<EpisodeModel> getEpisodeFromCharacter(int episodeId) async {
+    try {
+      final result =
+          await characterApiRemoteSource.getEpisodeFromCharacter(episodeId);
+      return result;
+    } on DioException catch (error) {
+      throw Exception(error.response?.data);
     }
   }
 }

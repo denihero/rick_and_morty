@@ -25,4 +25,13 @@ class CharacterSuccess extends CharacterState {
   List<Object> get props => [allCharacter];
 }
 
+class CharacterDetailSuccess extends CharacterState {
+  CharacterDetailSuccess(this.allCharacter);
+  final Character allCharacter;
+
+  @override
+  List<Object> get props => [allCharacter];
+}
+
+
 class CharacterLoading extends CharacterState {}

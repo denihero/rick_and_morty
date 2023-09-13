@@ -9,6 +9,12 @@ class CharacterDataSource {
   Future<Response> getAllCharacters(int page) {
     return client.dio.get('/api/character?page=$page');
   }
+  Future<Response> getDetailCharacter(int characterId) {
+    return client.dio.get('/api/character/$characterId');
+  }
+  Future<Response> getEpisodeFromCharacter(int episodeId) {
+    return client.dio.get('/api/episode/$episodeId');
+  }
 
   Future<Response> filterAllCharacters({String? name, String? status,
       String? species, String? type, String? gender,required int page, }) {

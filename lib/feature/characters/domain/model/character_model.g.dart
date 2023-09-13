@@ -37,7 +37,7 @@ Character _$CharacterFromJson(Map<String, dynamic> json) => Character(
           ? null
           : Origin.fromJson(json['location'] as Map<String, dynamic>),
       image: json['image'] as String?,
-      episode:
+      episodeUrl:
           (json['episode'] as List<dynamic>?)?.map((e) => e as String).toList(),
       url: json['url'] as String?,
       created: json['created'] as String?,
