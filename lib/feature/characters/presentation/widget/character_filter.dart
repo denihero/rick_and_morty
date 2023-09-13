@@ -48,134 +48,138 @@ class _CharacterFilterState extends State<CharacterFilter> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 800,
-      color: Colors.white,
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Filter',
-                    style: TextStyle(color: Colors.black, fontSize: 25),
-                  ),
-                  Material(
-                    child: IconButton(
-                      onPressed: () {
-                        context.router.pop();
-                      },
-                      icon: const Icon(
-                        Icons.close,
-                        size: 45,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10, top: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Gender',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  Row(
-                    children: genderChips(),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  const Text('Status', style: TextStyle(fontSize: 18)),
-                  Row(
-                    children: statusChips(),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  const Text('Species', style: TextStyle(fontSize: 18)),
-                  Wrap(
-                    children: speciesChip(),
-                  ),
-                  const Text('type', style: TextStyle(fontSize: 18)),
-                  Wrap(
-                    children: typeChip(),
-                  )
-                ],
-              ),
-            ),
-            Center(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                child: Column(
+    return SafeArea(
+      child: Container(
+        color: Colors.white,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    PrimaryButton(
-                      onPressed: () {
-                        context.router.pop();
-                        context
-                            .read<CharacterBloc>()
-                            .filteredCharacterList
-                            .clear();
-                        context.read<CharacterBloc>().page = 1;
-                        widget.onPressed.call(
-                          selectedGender,
-                          selectedStatus,
-                          selectedSpecies,
-                          selectedType,
-                        );
-                        context.read<CharacterBloc>().add(
-                              FilterCharacter(
-                                gender: selectedGender != null
-                                    ? gender[selectedGender!]
-                                    : '',
-                                status: selectedStatus != null
-                                    ? status[selectedStatus!]
-                                    : '',
-                                species: selectedSpecies != null
-                                    ? species[selectedSpecies!]
-                                    : '',
-                                type: selectedType != null
-                                    ? type[selectedType!]
-                                    : null,
-                              ),
-                            );
-                      },
-                      height: 50,
-                      title: 'Apply',
+                    const Text(
+                      'Filter',
+                      style: TextStyle(color: Colors.black, fontSize: 25),
+                    ),
+                    Material(
+                      child: IconButton(
+                        onPressed: () {
+                          context.router.pop();
+                        },
+                        icon: const Icon(
+                          Icons.close,
+                          size: 45,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 10, top: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Gender',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    Row(
+                      children: genderChips(),
                     ),
                     const SizedBox(
-                      height: 10,
+                      height: 15,
                     ),
-                    PrimaryButton(
+                    const Text('Status', style: TextStyle(fontSize: 18)),
+                    Row(
+                      children: statusChips(),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    const Text('Species', style: TextStyle(fontSize: 18)),
+                    Wrap(
+                      children: speciesChip(),
+                    ),
+                    const Text('type', style: TextStyle(fontSize: 18)),
+                    Wrap(
+                      children: typeChip(),
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 50,
+              ),
+              Center(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  child: Column(
+                    children: [
+                      PrimaryButton(
                         onPressed: () {
-                          setState(() {
-                            selectedStatus = null;
-                            selectedGender = null;
-                            selectedType = null;
-                            selectedSpecies = null;
-                          });
+                          context.router.pop();
+                          context
+                              .read<CharacterBloc>()
+                              .filteredCharacterList
+                              .clear();
+                          context.read<CharacterBloc>().page = 1;
                           widget.onPressed.call(
                             selectedGender,
                             selectedStatus,
                             selectedSpecies,
                             selectedType,
                           );
+                          context.read<CharacterBloc>().add(
+                                FilterCharacter(
+                                  gender: selectedGender != null
+                                      ? gender[selectedGender!]
+                                      : '',
+                                  status: selectedStatus != null
+                                      ? status[selectedStatus!]
+                                      : '',
+                                  species: selectedSpecies != null
+                                      ? species[selectedSpecies!]
+                                      : '',
+                                  type: selectedType != null
+                                      ? type[selectedType!]
+                                      : null,
+                                ),
+                              );
                         },
                         height: 50,
-                        title: 'Clean')
-                  ],
+                        title: 'Apply',
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      PrimaryButton(
+                          onPressed: () {
+                            setState(() {
+                              selectedStatus = null;
+                              selectedGender = null;
+                              selectedType = null;
+                              selectedSpecies = null;
+                            });
+                            widget.onPressed.call(
+                              selectedGender,
+                              selectedStatus,
+                              selectedSpecies,
+                              selectedType,
+                            );
+                          },
+                          height: 50,
+                          title: 'Clean')
+                    ],
+                  ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
