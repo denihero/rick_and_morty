@@ -111,7 +111,7 @@ class _CharacterFilterState extends State<CharacterFilter> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               Center(
