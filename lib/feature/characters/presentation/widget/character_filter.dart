@@ -121,36 +121,7 @@ class _CharacterFilterState extends State<CharacterFilter> {
                   child: Column(
                     children: [
                       PrimaryButton(
-                        onPressed: () {
-                          context.router.pop();
-                          context
-                              .read<CharacterBloc>()
-                              .filteredCharacterList
-                              .clear();
-                          context.read<CharacterBloc>().page = 1;
-                          widget.onPressed.call(
-                            selectedGender,
-                            selectedStatus,
-                            selectedSpecies,
-                            selectedType,
-                          );
-                          context.read<CharacterBloc>().add(
-                                FilterCharacter(
-                                  gender: selectedGender != null
-                                      ? gender[selectedGender!]
-                                      : '',
-                                  status: selectedStatus != null
-                                      ? status[selectedStatus!]
-                                      : '',
-                                  species: selectedSpecies != null
-                                      ? species[selectedSpecies!]
-                                      : '',
-                                  type: selectedType != null
-                                      ? type[selectedType!]
-                                      : null,
-                                ),
-                              );
-                        },
+                        onPressed: useFilter,
                         height: 50,
                         title: 'Apply',
                       ),
@@ -158,20 +129,7 @@ class _CharacterFilterState extends State<CharacterFilter> {
                         height: 10,
                       ),
                       PrimaryButton(
-                          onPressed: () {
-                            setState(() {
-                              selectedStatus = null;
-                              selectedGender = null;
-                              selectedType = null;
-                              selectedSpecies = null;
-                            });
-                            widget.onPressed.call(
-                              selectedGender,
-                              selectedStatus,
-                              selectedSpecies,
-                              selectedType,
-                            );
-                          },
+                          onPressed: cleanFilter,
                           height: 50,
                           title: 'Clean')
                     ],
@@ -184,9 +142,54 @@ class _CharacterFilterState extends State<CharacterFilter> {
       ),
     );
   }
+  void useFilter() {
+    context.router.pop();
+    context
+        .read<CharacterBloc>()
+        .filteredCharacterList
+        .clear();
+    context.read<CharacterBloc>().page = 1;
+    widget.onPressed.call(
+      selectedGender,
+      selectedStatus,
+      selectedSpecies,
+      selectedType,
+    );
+    context.read<CharacterBloc>().add(
+      FilterCharacter(
+        gender: selectedGender != null
+            ? gender[selectedGender!]
+            : '',
+        status: selectedStatus != null
+            ? status[selectedStatus!]
+            : '',
+        species: selectedSpecies != null
+            ? species[selectedSpecies!]
+            : '',
+        type: selectedType != null
+            ? type[selectedType!]
+            : null,
+      ),
+    );
+  }
+  void cleanFilter() {
+    setState(() {
+      selectedStatus = null;
+      selectedGender = null;
+      selectedType = null;
+      selectedSpecies = null;
+    });
+    widget.onPressed.call(
+      selectedGender,
+      selectedStatus,
+      selectedSpecies,
+      selectedType,
+    );
+  }
 
   List<Widget> genderChips() {
     List<Widget> chips = [];
+
     for (int i = 0; i < gender.length; i++) {
       Widget item = Padding(
         padding: const EdgeInsets.only(left: 5, right: 5),
@@ -210,6 +213,7 @@ class _CharacterFilterState extends State<CharacterFilter> {
 
   List<Widget> statusChips() {
     List<Widget> chips = [];
+
     for (int i = 0; i < status.length; i++) {
       Widget item = Padding(
         padding: const EdgeInsets.only(left: 5, right: 5),
@@ -233,6 +237,7 @@ class _CharacterFilterState extends State<CharacterFilter> {
 
   List<Widget> speciesChip() {
     List<Widget> chips = [];
+
     for (int i = 0; i < species.length; i++) {
       Widget item = Padding(
         padding: const EdgeInsets.only(left: 5, right: 5),
@@ -256,6 +261,7 @@ class _CharacterFilterState extends State<CharacterFilter> {
 
   List<Widget> typeChip() {
     List<Widget> chips = [];
+
     for (int i = 0; i < type.length; i++) {
       Widget item = Padding(
         padding: const EdgeInsets.only(left: 5, right: 5),
