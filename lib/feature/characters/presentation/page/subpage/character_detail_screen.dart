@@ -66,6 +66,7 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
                             width: MediaQuery.sizeOf(context).width / 1.4,
                             height: 300,
                             fit: BoxFit.cover,
+                            errorWidget: (context,_,__) => const Icon(Icons.error),
                           ),
                         ),
                       ),

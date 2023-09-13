@@ -28,6 +28,7 @@ class CharacterFromEpisodeCard extends StatelessWidget {
         ),
         child: CachedNetworkImage(
           imageUrl: character?.image ?? '',
+          errorWidget: (context,_,__) => const Icon(Icons.error),
         ),
       ),
     );

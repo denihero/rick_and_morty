@@ -37,6 +37,7 @@ class CharacterCard extends StatelessWidget {
                   imageUrl: character.image ?? '',
                   width: 160,
                   fit: BoxFit.cover,
+                  errorWidget: (context,_,__) => const Icon(Icons.error),
                 ),
               ),
               Padding(
